@@ -12,6 +12,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Optional;
 
 @Slf4j
 @Controller
@@ -61,26 +62,38 @@ public class Lounge {
         }
     }
 
-    @ResponseBody
     @RequestMapping(value = "/añadirUsuario", method = RequestMethod.POST)
     public String añadirUsuario(
             @RequestParam("username") String username,
-            @RequestParam("avatar") MultipartFile avatar,
-            @RequestParam("pin") String pin) {
+            @RequestParam(value = "avatar", required = false) MultipartFile avatarFile,
+            @RequestParam("pin") String pin, Model model) {
 
         if (userRepository.existsByUsername(username)) {
-            User exisingUser = userRepository.getUserByUsername(username);
-            exisingUser.setAvatar(saveAvatar(avatar));
-            exisingUser.setPin(pin);
-            userRepository.save(exisingUser);
-            return "Usuario actualizado: " + exisingUser;
+            User existingUser = userRepository.getUserByUsername(username);
+
+
+            if (avatarFile != null && !avatarFile.isEmpty()) {
+                existingUser.setAvatar(saveAvatar(avatarFile));
+            } else {
+                existingUser.setAvatar("avatar/default.svg");
+            }
+
+            existingUser.setPin(pin);
+            userRepository.save(existingUser);
+            model.addAttribute("respuesta", "Usuario actualizado: " + existingUser);
+            model.addAttribute("listaUsuarios", userRepository.findAll());
+            return "index";
         } else {
             User newUser = new User();
             newUser.setUsername(username);
-            newUser.setAvatar(saveAvatar(avatar));
+            if (avatarFile != null && !avatarFile.isEmpty()) {
+                newUser.setAvatar(saveAvatar(avatarFile));
+            }
             newUser.setPin(pin);
             userRepository.save(newUser);
-            return "Usuario creado: " + newUser;
+            model.addAttribute("respuesta", "Usuario creado: " + newUser);
+            model.addAttribute("listaUsuarios", userRepository.findAll());
+            return "index";
         }
     }
 

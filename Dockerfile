@@ -9,5 +9,7 @@ FROM openjdk:17-alpine as runstage
 WORKDIR /app
 RUN mkdir /app/public
 RUN mkdir /app/public/avatar
+COPY /public/avatar/admin.jpg /app/public/avatar/admin.jpg
+COPY /public/avatar/default.svg /app/public/avatar/default.svg
 COPY --from=buildstage /app/target/*.jar ./app.jar
 CMD ["java", "-jar", "app.jar"]

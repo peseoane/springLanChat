@@ -24,8 +24,8 @@ public class User {
     @Column(name = "username", nullable = false)
     private String username;
 
-    @Column(name = "avatar", nullable = false)
-    private String avatar;
+    @Column(name = "avatar", nullable = false, columnDefinition = "varchar(255) not null default 'avatar/default.svg'")
+    private String avatar = "avatar/default.png";
 
     @Column(name = "pin", nullable = false, length = 4)
     private String pin;

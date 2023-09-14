@@ -63,7 +63,14 @@
 
             <div class="mb-3">
                 <label for="avatar" class="form-label">Avatar</label>
-                <input type="file" class="form-control" id="avatar" name="avatar" required>
+                <input type="file" class="form-control" id="avatar" name="avatar" >
+                <div class="alert alert-info">
+                    Si no se selecciona un avatar se usará uno por defecto, puedes cambiarlo más tarde
+                    volviendo a introducir tu nombre de usuario, pin y un nuevo avatar.
+                </div>
+                <div class="alert alert-success" th:if="${respuesta}">
+                    <p th:text="${respuesta}"></p>
+                </div>
             </div>
 
             <div class="mb-3">
