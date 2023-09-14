@@ -22,10 +22,8 @@ public class Lounge {
     private final MessageRepository messageRepository;
 
     private final UserRepository userRepository;
-
-    private User admin;
-
     private final HttpSession httpSession;
+    private final User admin;
 
     public Lounge(AuthTokenManager authTokenManager, MessageRepository messageRepository, UserRepository userRepository, HttpSession httpSession) {
         this.authTokenManager = authTokenManager;
@@ -49,6 +47,11 @@ public class Lounge {
     private String saveAvatar(MultipartFile avatar) {
         try {
             String avatarName = avatar.getOriginalFilename();
+            // create folder if not exists
+            File avatarFolder = new File(System.getProperty("user.dir") + "/public/avatar");
+            if (!avatarFolder.exists()) {
+                avatarFolder.mkdir();
+            }
             String avatarPath = System.getProperty("user.dir") + "/public/avatar/" + avatarName;
             File avatarFile = new File(avatarPath);
             avatar.transferTo(avatarFile);

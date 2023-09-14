@@ -7,5 +7,7 @@ RUN --mount=type=cache,target=/root/.m2 mvn clean package -Prelease -DskipTests
 
 FROM openjdk:17-alpine as runstage
 WORKDIR /app
+RUN mkdir /app/public
+RUN mkdir /app/public/avatar
 COPY --from=buildstage /app/target/*.jar ./app.jar
 CMD ["java", "-jar", "app.jar"]

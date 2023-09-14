@@ -1,21 +1,17 @@
 package com.peseoane.springlanchat.controller;
 
+import com.peseoane.springlanchat.model.Message;
+import com.peseoane.springlanchat.model.MessageRepository;
+import com.peseoane.springlanchat.model.User;
+import com.peseoane.springlanchat.model.UserRepository;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import com.peseoane.springlanchat.model.*;
-import reactor.core.publisher.Flux;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import java.io.Flushable;
+
 import java.util.List;
 
 @Slf4j
@@ -27,10 +23,8 @@ public class Chat {
     private final MessageRepository messageRepository;
 
     private final UserRepository userRepository;
-
-    private User admin;
-
     private final HttpSession httpSession;
+    private final User admin;
 
     public Chat(AuthTokenManager authTokenManager, MessageRepository messageRepository, UserRepository userRepository, HttpSession httpSession) {
         this.authTokenManager = authTokenManager;
@@ -39,6 +33,7 @@ public class Chat {
         this.httpSession = httpSession;
         this.admin = userRepository.getUserByUsername("admin");
     }
+
     @GetMapping
     public String chat(Model model) {
         String authToken = (String) httpSession.getAttribute("authToken");
@@ -58,7 +53,6 @@ public class Chat {
             return "redirect:/login?error=true";
         }
     }
-
 
 
     @GetMapping(path = "/bye")
