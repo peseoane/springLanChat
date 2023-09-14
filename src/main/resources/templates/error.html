@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>LAN CHAT DAW</title>
+    <meta content="Chat offline con usos bonitos..."
+          name="description">
+    <link crossorigin="anonymous"
+          th:href="@{/css/bootstrap.min.css}"
+          rel="stylesheet">
+    <script crossorigin="anonymous"
+            th:src="@{/js/bootstrap.min.js}"></script>
+
+    <meta content="red" name="theme-color">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <link rel="manifest" th:href="@{/manifest.json}">
+    <link rel="icon" th:href="@{/img/LOGO.svg}">
+
+</head>
+<body>
+
+<a class="barra" href="/">
+    <nav class="nav d-flex align-items-center bg-dark">
+        <div class="p-3 flex-fill">
+            <img alt="favicon" class="align-self-start flex-fill"
+                 style="height: 2em;"
+                 th:src="@{/img/LOGO.svg}">
+        </div>
+        <div class="p-2 flex-fill">
+            <h2 class="align-self-center flex-fill fw-light fst-italic h3">
+                Chat offline / LAN privado de alumnos
+            </h2>
+        </div>
+        <div class="p-2 flex-fill">
+            <h1 class="align-self-center flex-fill fw-bolder h3"
+            >DAW IES de Teis
+            </h1>
+        </div>
+
+        <div class="p-2 flex-fill d-flex flex-column align-items-center justify-content-center">
+            <div class="align-self-center flex-fill fst-italic h6 small h-50">
+                Página principal
+            </div>
+            <div class="align-self-center flex-fill fw-light fst-italic small h-50">
+                beta (seguramente pa siempre)
+            </div>
+        </div>
+    </nav>
+</a>
+
+<div class="container mt-4">
+    <h1 class="text-center">Autenticación fallida</h1>
+    <p class="text-center">El usuario o la contraseña son incorrectos</p>
+    <button class="btn btn-primary" onclick="window.history.back()">Volver</button>
+</div>
+
+</body>
+<footer class="footer mt-4 py-3 bg-dark text-white">
+    <div class="container text-center">
+        <img alt="favicon" class="mb-3" style="width: 5em;"
+             th:src="@{/img/LOGO.svg}">
+        <p class="mb-0">En recuerdo de Alfonso.</p>
+    </div>
+</footer>
+</html>

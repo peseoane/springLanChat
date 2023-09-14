@@ -1,0 +1,43 @@
+services:
+
+  spring:
+    container_name: 'lanChatSpring'
+    build:
+      context: '.'
+      dockerfile: 'Dockerfile'
+    ports:
+      - '6969:8080'
+    depends_on:
+      - 'postgres'
+    links:
+      - 'postgres'
+    networks:
+      - 'lanChatNetwork'
+      - 'wanChatNetwork'
+
+  postgres:
+    container_name: 'lanChatPostgres'
+    image: 'postgres:latest'
+    environment:
+      - 'POSTGRES_DB=daw'
+      - 'POSTGRES_PASSWORD=alumno'
+      - 'POSTGRES_USER=alumno'
+    ports:
+      - '6970:5432'
+    volumes:
+      - dbLanChat:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+    networks:
+      - 'lanChatNetwork'
+      - 'wanChatNetwork'
+
+volumes:
+  dbLanChat:
+
+networks:
+  lanChatNetwork:
+    driver: 'bridge'
+    internal: true
+  wanChatNetwork:
+    driver: 'bridge'

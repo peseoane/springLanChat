@@ -1,0 +1,21 @@
+{
+  "name": "LanDawChatSpring",
+  "short_name": "DAW Chat",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#black",
+  "theme_color": "#red",
+  "icons": [
+    {
+      "src": "./IMG/LOGO.png",
+      "sizes": "720x720",
+      "type": "image/png"
+    },
+    {
+      "src": "./img/LOGO.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

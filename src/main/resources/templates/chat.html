@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>LAN CHAT DAW</title>
+    <meta content="Chat offline con usos bonitos..."
+          name="description">
+    <link crossorigin="anonymous"
+          rel="stylesheet"
+          th:href="@{/css/bootstrap.min.css}">
+    <script crossorigin="anonymous"
+            th:src="@{/js/bootstrap.min.js}"></script>
+    <script crossorigin="anonymous"
+            th:src="@{/js/jquery.js}"></script>
+
+    <meta content="red" name="theme-color">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <link rel="manifest" th:href="@{/manifest.json}">
+    <link rel="icon" th:href="@{/img/LOGO.svg}">
+
+</head>
+<body>
+
+<a class="barra" href="/">
+    <nav class="nav d-flex align-items-center bg-dark">
+        <div class="p-3 flex-fill">
+            <img alt="favicon" class="align-self-start flex-fill"
+                 style="height: 2em;"
+                 th:src="@{/img/LOGO.svg}">
+        </div>
+        <div class="p-2 flex-fill">
+            <h2 class="align-self-center flex-fill fw-light fst-italic h3">
+                Chat offline / LAN privado de alumnos
+            </h2>
+        </div>
+        <div class="p-2 flex-fill">
+            <h1 class="align-self-center flex-fill fw-bolder h3"
+            >DAW IES de Teis
+            </h1>
+        </div>
+
+        <div class="p-2 flex-fill d-flex flex-column align-items-center justify-content-center">
+            <div class="align-self-center flex-fill fst-italic h6 small h-50">
+                Página principal
+            </div>
+            <div class="align-self-center flex-fill fw-light fst-italic small h-50">
+                beta (seguramente pa siempre)
+            </div>
+        </div>
+    </nav>
+</a>
+
+<div class="container mt-4">
+    <h1 class="text-center">Bienvenido al chat offline</h1>
+    <p class="text-center">Aquí podrás chatear con tus compañeros de clase sin necesidad de internet</p>
+    <!-- create a layout for the chat with bootstrap 5, left my data in a card, right the chat -->
+
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-md-4">
+                <!-- Información del chat (izquierda) -->
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${user.getUsername()}">Nombre del Usuario</h5>
+                        <!-- Agregar el avatar del usuario -->
+                        <img alt="Avatar" class="img-fluid" th:src="${user.getAvatar()}">
+                        <p class="card-text">Aquí podrás chatear con tus compañeros de clase sin necesidad de
+                            internet.</p>
+                    </div>
+                    <button class="btn btn-primary bg-danger" onclick="window.location.href='chat/logout'">Cerrar
+                        sesión
+                    </button>
+
+                </div>
+            </div>
+            <div class="col-md-8">
+                <!-- Chat (derecha) -->
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Chat</h5>
+                        <!-- Contenedor con altura máxima y scroll -->
+                        <div class="chat-container" style="max-height: 500px; overflow-y: auto;">
+                            <ul class="list-group">
+                                <li class="list-group-item" th:each="message : ${messages}">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <img alt="Avatar" class="img-fluid rounded-circle" style="height: 40px;"
+                                             th:src="${message.sender.avatar}">
+                                        <div class="ms-2">
+                                            <div class="fw-bold" th:text="${message.sender.username}"></div>
+                                            <small class="text-muted" th:text="${#dates.format(message.timestamp, 'dd-MM HH:mm')}"></small>
+                                        </div>
+                                    </div>
+                                    <div th:text="${message.message}"></div>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <script>
+                            function updateChatContent() {
+                                $.ajax({
+                                    url: '/chat', // Ruta de tu controlador de Spring para obtener nuevos mensajes
+                                    method: 'GET',
+                                    dataType: 'html',
+                                    success: function (data) {
+                                        // Reemplazar el contenido de chat-content con el nuevo contenido
+                                        $('.chat-container').html($(data).find('.chat-container').html());
+                                    },
+                                    error: function () {
+                                        console.error('Error al actualizar el chat.');
+                                    }
+                                });
+                            }
+
+                            // Llamar a updateChatContent cada x segundos
+                            setInterval(updateChatContent, 1000);
+
+                        </script>
+
+                        <!-- Formulario para enviar mensajes -->
+                        <form method="post" th:action="@{/chat/send}">
+                            <div class="input-group">
+                                <input class="form-control" name="message" placeholder="Escribe un mensaje..."
+                                       required type="text">
+                                <button class="btn btn-primary" type="submit">Enviar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+<footer class="footer mt-4 py-3 bg-dark text-white">
+    <div class="container text-center">
+        <img alt="favicon" class="mb-3" style="width: 5em;"
+             th:src="@{/img/LOGO.svg}">
+        <p class="mb-0">En recuerdo de Alfonso.</p>
+    </div>
+</footer>
+</html>

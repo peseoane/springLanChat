@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>LAN CHAT DAW</title>
+    <meta content="Chat offline con usos bonitos..."
+          name="description">
+    <link crossorigin="anonymous"
+          th:href="@{/css/bootstrap.min.css}"
+          rel="stylesheet">
+    <script crossorigin="anonymous"
+            th:src="@{/js/bootstrap.min.js}"></script>
+
+    <meta content="red" name="theme-color">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <link rel="manifest" th:href="@{/manifest.json}">
+    <link rel="icon" th:href="@{/img/LOGO.svg}">
+
+</head>
+<body>
+
+<a class="barra" href="/">
+    <nav class="nav d-flex align-items-center bg-dark">
+        <div class="p-3 flex-fill">
+            <img alt="favicon" class="align-self-start flex-fill"
+                 style="height: 2em;"
+                 th:src="@{/img/LOGO.svg}">
+        </div>
+        <div class="p-2 flex-fill">
+            <h2 class="align-self-center flex-fill fw-light fst-italic h3">
+                Chat offline / LAN privado de alumnos
+            </h2>
+        </div>
+        <div class="p-2 flex-fill">
+            <h1 class="align-self-center flex-fill fw-bolder h3"
+            >DAW IES de Teis
+            </h1>
+        </div>
+
+        <div class="p-2 flex-fill d-flex flex-column align-items-center justify-content-center">
+            <div class="align-self-center flex-fill fst-italic h6 small h-50">
+                Página principal
+            </div>
+            <div class="align-self-center flex-fill fw-light fst-italic small h-50">
+                beta (seguramente pa siempre)
+            </div>
+        </div>
+    </nav>
+</a>
+
+<div class="container mt-4">
+    <h1 class="text-center">Bienvenido al chat offline</h1>
+    <p class="text-center">Aquí podrás chatear con tus compañeros de clase sin necesidad de internet</p>
+    <div>
+        <h2>Añadir o actualizar usuario</h2>
+        <form action="/añadirUsuario" method="post" enctype="multipart/form-data">
+
+            <!-- ask for username avatar and pin, the ping must be 4 digits long alphanumeric -->
+            <div class="mb-3">
+                <label for="username" class="form-label">Nombre de usuario</label>
+                <input type="text" class="form-control" id="username" name="username" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="avatar" class="form-label">Avatar</label>
+                <input type="file" class="form-control" id="avatar" name="avatar" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="pin" class="form-label">PIN</label>
+                <input type="text" class="form-control" id="pin" name="pin" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Añadir usuario</button>
+
+            <script>
+                document.getElementById("pin").addEventListener("input", function () {
+                    let pin = document.getElementById("pin").value;
+                    if (pin.length === 4 && /^[a-zA-Z0-9]+$/.test(pin)) {
+                        document.getElementById("pin").classList.remove("is-invalid");
+                        document.getElementById("pin").classList.add("is-valid");
+                    } else {
+                        document.getElementById("pin").classList.remove("is-valid");
+                        document.getElementById("pin").classList.add("is-invalid");
+                    }
+                });
+            </script>
+
+        </form>
+    </div>
+    <div>
+        <h2>Miembros</h2>
+        <table class="table table-striped w-50">
+            <thead>
+            <tr>
+                <th scope="col">Nombre de usuario</th>
+                <th scope="col">Avatar</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="usuario : ${listaUsuarios}">
+                <td th:text="${usuario.getUsername()}"></td>
+                <td><img class="img-fluid img-thumbnail w-25" th:src="${usuario.getAvatar()}"></td>
+            </tbody>
+        </table>
+
+
+    </div>
+    <div class="m-3">
+        <h2>Login</h2>
+        <form action="/login" method="post">
+            <div class="mb-3">
+                <label for="usernamelog" class="form-label">Nombre de usuario</label>
+                <input type="text" class="form-control" id="usernamelog" name="username" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="pinlog" class="form-label">PIN</label>
+                <input type="password" class="form-control" id="pinlog" name="pin" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Login</button>
+        </form>/
+    </div>
+</div>
+
+</body>
+<footer class="footer mt-4 py-3 bg-dark text-white">
+    <div class="container text-center">
+        <img alt="favicon" class="mb-3" style="width: 5em;"
+             th:src="@{/img/LOGO.svg}">
+        <p class="mb-0">En recuerdo de Alfonso.</p>
+    </div>
+</footer>
+</html>
